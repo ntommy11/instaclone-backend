@@ -1,45 +1,23 @@
-import { ApolloServer, gql} from 'apollo-server';
-// The GraphQL schema
-const typeDefs = gql`
-  type Movie {
-    title:String
-    year:Int
-  }
-  type Query {
-    movies: [Movie]
-    movie:Movie
-  }
-  type Mutation {
-    createMovie(title:String!):Boolean
-    deleteMovie(title:String!):Boolean
-  }
-`;
+require('dotenv').config();
 
-// A map of functions which return data for the schema.
-const resolvers = {
-  Query: {
-    movies: () => [],
-    movie: () => ({title:"hello", year:2021}),
-  },
-  Mutation: {
-    createMovie: (_, {title}) => {
-      console.log(title);
-      return true;
-    },
-    deleteMovie: (_, {title}) => {
-      console.log(title);
-      return true;
-    },
-  }
-};
+import { ApolloServer, gql} from 'apollo-server';
+import schema from './schema';
+import { getUser, protectResolver } from './users/users.utils';
+
+// The GraphQL schema
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema,
+  context: async ({req})=>{
+    return {
+      loggedInUser: await getUser(req.headers.token),
+      protectResolver,
+    }
+  }
 });
 
 const url = "http://localhost:4000/";
-
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
+const PORT = process.env.PORT
+server.listen(PORT).then(({ url }) => {
+  console.log(`🚀 Server ready at localhost:${PORT}`);
 });
