@@ -29,11 +29,12 @@ export const protectResolver = (user) => {
 }
 */
 export const protectResolver = (resolver)=> (root,args,context,info)=>{
+  //console.log(context?.loggedInUser);
   if(!context.loggedInUser){
     return {
       ok:false,
       error:"please login to perform this action"
     }
-    return resolver(root,args,context,info);
   }
+  return resolver(root,args,context,info);
 }

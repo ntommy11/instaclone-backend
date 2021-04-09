@@ -1,7 +1,10 @@
+import fs from "fs";
 import bcrypt from 'bcrypt';
 import client from "../../client";
 import jwt from 'jsonwebtoken';
 import { protectResolver } from '../users.utils';
+
+
 
 export default {
   Mutation: {
@@ -12,9 +15,21 @@ export default {
         username,
         email,
         password:newPassword,
+        bio,
+        avatar
       }, { loggedInUser, protectResolver }) => {
-        protectResolver(loggedInUser);
-        
+        //protectResolver(loggedInUser);
+        console.log(avatar);
+        console.log(loggedInUser);
+
+        const {filename, createReadStream} = await avatar;
+        console.log(filename, createReadStream);
+        const readStream = createReadStream();
+        const writeStream = fs.createWriteStream(process.cwd()+"/uploads/"+filename);
+
+        readStream.pipe(writeStream);
+
+
         let uglyPassword = null;
         if(newPassword){
           uglyPassword = await bcrypt.hash(newPassword, 10);
@@ -30,8 +45,9 @@ export default {
             lastName:lastName,
             username:username,
             email:email,
+            bio:bio,
             ...(uglyPassword && {password: uglyPassword}),
-          }
+          } 
         });
         if(updatedUser.id){
           return {
