@@ -18,16 +18,19 @@ export default {
         bio,
         avatar
       }, { loggedInUser, protectResolver }) => {
-        //protectResolver(loggedInUser);
-        console.log(avatar);
-        console.log(loggedInUser);
-
-        const {filename, createReadStream} = await avatar;
-        console.log(filename, createReadStream);
-        const readStream = createReadStream();
-        const writeStream = fs.createWriteStream(process.cwd()+"/uploads/"+filename);
-
-        readStream.pipe(writeStream);
+        //console.log(avatar);
+        //console.log(loggedInUser);
+        let avatarUrl = null;
+        if(avatar){
+          const {filename, createReadStream} = await avatar;
+          const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`;
+          console.log(filename, createReadStream);
+          const readStream = createReadStream();
+          const writeStream = fs.createWriteStream(process.cwd()+"/uploads/"+ newFilename);
+  
+          readStream.pipe(writeStream);
+          avatarUrl = `http://localhost:4000/static/${newFilename}`;
+        }
 
 
         let uglyPassword = null;
@@ -47,6 +50,7 @@ export default {
             email:email,
             bio:bio,
             ...(uglyPassword && {password: uglyPassword}),
+            ...(avatarUrl && {avatar: avatarUrl})
           } 
         });
         if(updatedUser.id){
