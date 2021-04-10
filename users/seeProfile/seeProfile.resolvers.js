@@ -6,6 +6,10 @@ export default {
       where: {
         username:username,
       },
+      include: {
+        following:true,
+        followers:true,
+      }
     }),
   }
 }
