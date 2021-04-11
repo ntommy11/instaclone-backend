@@ -27,5 +27,5 @@ apollo.applyMiddleware({app});
 const url = "http://localhost:4000/";
 const PORT = process.env.PORT
 app.listen({port:PORT},()=>{
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`🍣 Server is running on http://localhost:${PORT}/graphql`);
 })
