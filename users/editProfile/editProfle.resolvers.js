@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import client from "../../client";
 import jwt from 'jsonwebtoken';
 import { protectResolver } from '../users.utils';
+import { uploadToS3 } from "../../shared/shared.utils";
 
 
 
@@ -22,6 +23,8 @@ export default {
         //console.log(loggedInUser);
         let avatarUrl = null;
         if(avatar){
+          avatarUrl = await uploadToS3(avatar, loggedInUser.id, "avatars");
+          /*
           const {filename, createReadStream} = await avatar;
           const newFilename = `${loggedInUser.id}-${Date.now()}-${filename}`;
           console.log(filename, createReadStream);
@@ -30,6 +33,7 @@ export default {
   
           readStream.pipe(writeStream);
           avatarUrl = `http://localhost:4000/static/${newFilename}`;
+          */
         }
 
 

@@ -31,6 +31,10 @@ export const protectResolver = (user) => {
 export const protectResolver = (resolver)=> (root,args,context,info)=>{
   //console.log(context?.loggedInUser);
   if(!context.loggedInUser){
+    const isQuery = info.operation.operation === "query";
+    if (isQuery){
+      return null;
+    }
     return {
       ok:false,
       error:"please login to perform this action"
