@@ -5,12 +5,16 @@
 - [x] See Hashtags
 - [x] Search Photos
 - [x] Edit Photo
-- [ ] Like / Unlike Photo
-- [ ] See Photo Likes
-- [ ] See Feed
+- [x] Like / Unlike Photo
+- [x] See Photo Likes
+- [x] See Feed
+- [x] See Photo Comments
+- [x] ismine (delete Photo)
 
 ## Comments
 
-- [ ] Comment on Photo
-- [ ] Edit Comment
+- [x] Comment on Photo
+- [x] Edit Comment
 - [ ] Delete Comment
+
+## Extras
