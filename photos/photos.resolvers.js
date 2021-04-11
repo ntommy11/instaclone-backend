@@ -19,6 +19,31 @@ export default {
           }
         }
       })
-    }
+    },
+    likes: ({id})=>client.like.count({
+      where:{
+        pid: id
+      }
+    })
+  },
+  Hashtag: {
+    photos: ({ id }, { page }, { loggedInUser }) => {
+      return client.hashtag
+        .findUnique({
+          where: {
+            id,
+          },
+        })
+        .photos();
+    },
+    totalPhotos: (thisHashtag)=>client.photo.count({
+      where:{
+        hashtags:{
+          some: {
+            id: thisHashtag.id
+          }
+        }
+      }
+    })
   }
 }

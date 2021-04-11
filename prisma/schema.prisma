@@ -24,6 +24,7 @@ model User {
   following User[] @relation("FollowRelation", references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  likes      Like[]
 }
 
 model Photo {
@@ -35,6 +36,7 @@ model Photo {
   hashtags  Hashtag[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  likes     Like[]  
 }
 
 model Hashtag{
@@ -44,4 +46,15 @@ model Hashtag{
   hashtag   String    @unique
   photos    Photo[]
 
+}
+
+model Like {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  photo     Photo     @relation(fields: [pid], references: [id])
+  pid       Int
+  user      User      @relation(fields: [uid], references: [id])
+  uid       Int
+  @@unique([pid,uid])
 }
