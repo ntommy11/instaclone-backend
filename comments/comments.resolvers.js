@@ -1,3 +1,5 @@
+import client from "../client";
+
 export default {
   Comment:{
     isMine: ({uid},_,{loggedInUser})=>{
@@ -5,6 +7,11 @@ export default {
         return false;
       }
       return uid === loggedInUser.id
-    }
+    },
+    user: ({uid})=>client.user.findUnique({
+      where:{
+        id: uid,
+      }
+    })
   }
 }

@@ -25,16 +25,42 @@ export default {
         pid: id
       }
     }),
-    comments: ({id})=>client.comment.count({
+    comments: ({id})=>client.comment.findMany({
       where:{
         pid: id
+      },
+      include:{
+        user: true,
       }
+      
     }),
+    numComment:({id})=>client.comment.count({where:{pid:id}}),
     isMine: ({userId},_,{loggedInUser})=>{
       if(!loggedInUser){
         return false;
       }
       return userId === loggedInUser.id
+    },
+    isLiked: async ({id},_,{loggedInUser})=>{
+      if(!loggedInUser){
+        return false;
+      }
+      const ok = await client.like.findUnique({
+        where:{
+          pid_uid:{
+            pid: id,
+            uid:loggedInUser.id
+          }
+        },
+        select:{
+          id:true
+        }
+      });
+      if(ok){
+        return true;
+      }else{
+        return false;
+      }
     }
   },
   Hashtag: {

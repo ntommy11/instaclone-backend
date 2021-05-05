@@ -9,5 +9,6 @@ type Comment {
   isMine: Boolean!
   createdAt: String!
   updatedAt: String!
+  pid: Int!
 }
 `
